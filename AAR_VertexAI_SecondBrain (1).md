@@ -28,6 +28,20 @@ This is the infrastructure pattern early-stage AI startups need before they have
 
 Deliberately narrowed to what is cleanly demonstrable. Do not build all 14 scope items from the original brief.
 
+## Implementation Snapshot
+
+Verified in the repository as of April 2026:
+
+- [x] FastAPI scaffold with `/health`, `/ingest`, `/agent/init`, and `/agent/query`
+- [x] Local PDF and text extraction in the ingest flow with citation-shaped responses
+- [x] Unit tests for ingest and the agent scaffold
+- [x] Workspace-wide CI runner image and artifact collection for multi-repo test execution
+- [x] Initial Google Drive connector module with unit tests
+- [ ] Drive connector wired into live agent or ingest flow
+- [ ] Vertex AI Agent Builder configuration completed in GCP
+- [ ] Web grounding enabled
+- [ ] Firestore session memory implemented
+
 ### Phase A — Core Agent (Start here)
 - [ ] GCP project setup, billing, IAM, region locked to us-central1 (or europe-west2 to mirror brief)
 - [ ] Vertex AI Agent Builder agent initialized
@@ -94,3 +108,4 @@ The following items from the original brief are out of scope for the portfolio b
 - This build can be positioned as an InfraPortal v0.4 AI consulting feature or as a standalone repo — decide before starting
 - Document architecture decisions and tradeoffs throughout; that content doubles as LinkedIn and blog material
 - Long-term: this pattern is directly reusable for any client needing a document-grounded internal agent on GCP
+- Current repo state is ahead of the original scaffold: local ingest, testing, CI orchestration, and an initial Drive connector are in place, while the remaining work is mostly GCP/Vertex AI wiring.
