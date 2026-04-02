@@ -1,23 +1,65 @@
-vertexai-secondbrain — Phase A scaffold
+# vertexai-secondbrain
 
-This repository contains a minimal Phase A scaffold for the Vertex AI "Second Brain" portfolio exercise.
+FastAPI-based Phase A prototype for a document-grounded "Second Brain" portfolio build on GCP and Vertex AI patterns.
 
-What is included:
-- FastAPI service stub (app/) exposing an /ingest endpoint that accepts an uploaded file and returns a mocked cited answer.
-- Simple ingest mock implementing text extraction and citation formatting.
-- Pytest test exercising the ingest endpoint.
-- Terraform/placeholder for IaC (terraform/).
+## Current state
 
-How to run (local development):
+Implemented in this repo today:
 
-1. python -m venv .venv
-2. .\.venv\Scripts\Activate.ps1  # Windows PowerShell
-3. pip install -r requirements.txt
-4. uvicorn app.main:app --reload --port 8081
+- `POST /ingest` reads uploaded files and extracts text from PDFs with `pypdf`, with plain-text fallback for non-PDF input.
+- Citation-shaped responses are returned from ingest so downstream RAG wiring has a stable response contract.
+- `POST /agent/init` and `POST /agent/query` provide a minimal agent scaffold for later Vertex AI integration.
+- `app/drive_connector.py` contains a small Google Drive wrapper for listing files and downloading content.
+- Unit tests cover ingest, the agent scaffold, and the Drive connector.
 
-API:
-POST /ingest - multipart/form-data file upload. Returns { answer: string, citations: [{source, snippet}] }
+Not implemented yet:
 
-Notes:
-- This is a Phase A scaffold: mocked extraction + citation. Replace ingest mock with real PDF parsing and RAG flow when ready.
-- Keep agent instructions domain-agnostic and store session memory in Firestore (Phase B).
+- Vertex AI Agent Builder wiring
+- Drive connector authentication flow and endpoint integration
+- Web grounding
+- Firestore-backed session memory
+- Gmail connector and external extension work
+
+## Project layout
+
+- `app/main.py` - FastAPI app with `/health`, `/ingest`, and `/agent/*` routes
+- `app/ingest.py` - PDF/text extraction and citation response shaping
+- `app/agent.py` - minimal agent initialization and query handlers
+- `app/drive_connector.py` - Google Drive listing and download helper
+- `tests/` - unit tests for ingest, agent scaffold, and Drive connector
+- `terraform/` - IaC placeholder for later deployment work
+
+## Local development
+
+### Windows PowerShell
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+pytest
+uvicorn app.main:app --reload --port 8081
+```
+
+### Bash
+
+```bash
+python -m venv .venv
+source .venv/Scripts/activate
+pip install -r requirements.txt
+pytest
+uvicorn app.main:app --reload --port 8081
+```
+
+## API surface
+
+- `GET /health` - basic health check
+- `POST /ingest` - multipart upload, returns `{answer, citations}`
+- `POST /agent/init` - returns a placeholder `agent_id`
+- `POST /agent/query` - echoes prompt metadata and returns a placeholder answer
+
+## Notes
+
+- This is still a local scaffold, not a full Vertex AI deployment.
+- The Drive connector is intentionally small and testable; it is not yet connected to FastAPI routes or Agent Builder.
+- The next meaningful milestone is wiring Drive ingestion into the agent flow and enabling web grounding.
