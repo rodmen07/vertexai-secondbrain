@@ -15,34 +15,26 @@ class DummyFiles:
 
     def list(self, **kwargs):
         outer_files = self._files
-
-        class R:
+n        class R:
             def execute(self):
                 return {"files": outer_files}
+n        return R()
 
-        return R()
-
-
-class DummyService:
+nclass DummyService:
     def __init__(self, files_map):
         self._files_map = files_map
-
-    def files(self):
+n    def files(self):
         class Files:
             def __init__(self, outer):
                 self._outer = outer
-
-            def list(self, **kwargs):
+n            def list(self, **kwargs):
                 return DummyFiles(list(self._outer._files_map.values()))
-
-            def get_media(self, fileId=None):
+n            def get_media(self, fileId=None):
                 data = self._outer._files_map[fileId]
                 return DummyRequest(data)
+n        return Files(self)
 
-        return Files(self)
-
-
-def test_list_files_and_download():
+ndef test_list_files_and_download():
     files_map = {
         "f1": {"id": "f1", "name": "a.txt"},
         "f2": {"id": "f2", "name": "b.txt"},
