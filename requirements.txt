@@ -3,5 +3,5 @@ uvicorn==0.23.2
 pytest==7.4.2
 httpx==0.24.1
 python-multipart==0.0.22
-pypdf==6.9.2
+pypdf==6.10.0
 reportlab>=3.6.12
